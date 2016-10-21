@@ -1,5 +1,5 @@
 /**************************************************************************
-						UDF of ozone deposition
+			    UDF of ozone deposition
 @author:Jialei Shen
 @e-mail:shenjialei1992@163.com
 @latest:2016.10.20
@@ -25,26 +25,26 @@ DEFINE_SOURCE(ozone_deposition_udf,c,t,dS,eqn)
 	Thread *tf;
 	int n;
 	real NV_VEC(A);
-	real xc[ND_ND], xf[ND_ND],y0[ND_ND];
+	real xc[ND_ND], xf[ND_ND],y0[ND_ND];	//xc: centroid coordinates of the first cell to the wall; xf: centroid coordinates of the boundary faces;
 	real source,depo_rate;
-	real dy0;
+	real dy0;	
 	C_CENTROID(xc,c,t);
 	source=0.0;
-	c_face_loop (c,t,n)
+	c_face_loop (c,t,n)	//loop the faces of every cell
 	{
 		f=C_FACE(c,t,n);
 		tf=C_FACE_THREAD(c,t,n);
 		F_CENTROID(xf,f,tf);
-		if (THREAD_TYPE(tf)==THREAD_F_WALL)
+		if (THREAD_TYPE(tf)==THREAD_F_WALL)	//get the boundary faces
 		{
 			NV_VV(y0,=,xc,-,xf);
 			dy0=NV_MAG(y0);
 			F_AREA(A,f,tf);
-			depo_rate=vs/(1+vs*dy0/Dm)*NV_MAG(A)/C_VOLUME(c,t);
+			depo_rate=vs/(1+vs*dy0/Dm)*NV_MAG(A)/C_VOLUME(c,t);	//vd*A/V
 			source+=depo_rate;
 		}
 	}
-	source=-rho*source;
+	source=-rho*source;	//unit conversion
 	dS[eqn]=source;
 	source*=C_YI(c,t,0);
 	return source;
