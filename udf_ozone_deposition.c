@@ -1,7 +1,7 @@
 /**************************************************************************
 			    UDF of ozone deposition
 @author:Jialei Shen
-@e-mail:shenjialei1992@163.com
+@contact: www.jialeishen.com
 @latest:2016.10.20
 This is an UDF file to simulate indoor ozone deposition in CFD, excluded 
 the chemical reaction. The UDF file includes the following terms: 
